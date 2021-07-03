@@ -22,7 +22,7 @@ def lab_to_rgb(L: Tensor, ab: Tensor) -> List[Any]:
     return np.stack(rgb_imgs, axis=0)
 
 
-def prepare_image(image: Any) -> dict[str, Tensor]:
+def prepare_image(image: Any) -> Any:
     """Prepare the image for the model
     Reizes to the model Size, returns L and ab as tensors (only L for pred needed)
     """
@@ -37,7 +37,7 @@ def prepare_image(image: Any) -> dict[str, Tensor]:
     return {'L': L.unsqueeze(0), 'ab': ab.unsqueeze(0)}
 
 
-def predict_image(model: MainModel, data: dict[str, Tensor]) -> Any:
+def predict_image(model: MainModel, data: Any) -> Any:
     """Uses the model to predicts the image
     needs the data format defined above ind prepare_image
     returns predicted rgb
