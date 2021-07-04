@@ -6,8 +6,8 @@ data/
 events.out.*
 
 # models (they will be downloaded from source)
-# model/colorization_release_v2.caffemodel
-# model/v2_gan
+model/colorization_release_v2.caffemodel
+model/v2_gan
 
 # C extensions
 
