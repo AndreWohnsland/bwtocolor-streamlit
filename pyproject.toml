@@ -14,6 +14,7 @@ torchvision = "^0.10.0"
 torchaudio = "^0.9.0"
 scikit-image = "^0.18.2"
 opencv-python-headless = "^4.5.2"
+requests = "^2.25.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

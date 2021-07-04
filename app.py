@@ -1,7 +1,7 @@
 import streamlit as st
 
 from bwtocolor.footer import footer
-from bwtocolor.models import colorize_image
+from bwtocolor.models import colorize_image, precheck_models
 from bwtocolor.utils import (
     generate_picture_comparison, get_image_download_link, generate_information,
     generate_sidebar, prepare_input_image, generate_model_information,
@@ -13,6 +13,8 @@ st.set_page_config(
     page_icon="🖼️",
     layout="wide",
 )
+
+precheck_models()
 
 (use_caffe, is_color, uploaded_file) = generate_sidebar()
 

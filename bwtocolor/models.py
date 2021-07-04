@@ -6,6 +6,8 @@ import numpy as np
 from pathlib import Path
 import torch
 import streamlit as st
+import requests
+import os
 
 parent = Path(__file__).parents[1]
 prototxt = str(parent / "model" / "colorization_deploy_v2.prototxt")
@@ -14,12 +16,39 @@ np_hull = str(parent / "model" / "pts_in_hull.npy")
 own_model_path = str(parent / "model" / "v2_gan")
 
 
+def download_caffe_model():
+    url = "https://www.dropbox.com/s/wy7abxh3ozub8ip/colorization_release_v2.caffemodel?dl=1"
+    print("No caffe model found, getting it from source.")
+    r = requests.get(url, allow_redirects=True)
+    open(caffemodel, 'wb').write(r.content)
+
+
+def download_gan_model():
+    url = "https://www.dropbox.com/s/km93aj85sih4tc2/v2_gan?dl=1"
+    print("No GAN model found, getting it from source.")
+    r = requests.get(url, allow_redirects=True)
+    open(own_model_path, 'wb').write(r.content)
+
+
+def precheck_models():
+    if not os.path.isfile(caffemodel):
+        st.write("Downloading Caffe Model ...")
+        download_caffe_model()
+        st.write("Finished downloading Caffe Model")
+    if not os.path.isfile(own_model_path):
+        st.write("Downloading GAN Model ...")
+        download_gan_model()
+        st.write("Finished downloading GAN Model")
+
+
 def load_caffe() -> Any:
     """Load the Caffe model and according data, return the finished model
 
     Returns:
         model: Initialized caffe model (I think its a pytorch one as well?)
     """
+    if not os.path.isfile(caffemodel):
+        download_caffe_model()
     model = cv.dnn.readNetFromCaffe(prototxt, caffemodel)
     pts = np.load(np_hull)
     # add the cluster centers as 1x1 convolutions to the model
@@ -66,6 +95,8 @@ def load_own() -> MainModel:
     Returns:
         pytorch model: Initialized pytorch model
     """
+    if not os.path.isfile(own_model_path):
+        download_gan_model()
     model = MainModel()
     model.load_state_dict(torch.load(own_model_path, map_location=torch.device('cpu')))
     return model
