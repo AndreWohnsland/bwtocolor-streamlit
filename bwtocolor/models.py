@@ -126,7 +126,6 @@ def predict_own(image: Any) -> Any:
     return final_rgb
 
 
-@st.cache()
 def colorize_image(image: Any, use_caffe: bool) -> Any:
     """Colorize the given image
 
